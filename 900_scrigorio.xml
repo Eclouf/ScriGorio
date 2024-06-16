@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<!--
+ XML file for using gregorio inside scribus.
+ Copyright (C) 2009 Pierre Couderc <pierre@couderc.eu>.
+ Copyright (C) 2010 Elie Roux <elie.roux@telecom-bretagne.eu>
+ Copyright (C) 2015-2021 The Gregorio Project (see CONTRIBUTORS.md)
+
+ modify by Eclouf 2024 for ScriGorio
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ See the different comments in the file to change the default configuration.
+-->
+<editorsettings description="ScriGorio" icon="scrigorio.svg">
+    <executable command="lualatex --shell-escape --interaction nonstopmode" />
+    <imagefile extension=".pdf"/>
+    <highlighter>
+        <rule name="gabc header" regex="[a-zA-Z]+:" color="blue" minimal="true"/>
+        <rule name="gabc delimiter" regex="%%" color="green" minimal="true"/>
+        <rule name="gabc notes" regex="\([^)]*\)" color="red" minimal="true"/>
+    </highlighter>
+    <empty-frame-text>
+        name: myscore;
+        %%
+        (c3) Pó(eh/hi)pu(h)lus(h) Si(hi)on,(hgh.)
+    </empty-frame-text>
+    <!-- you can change the basic headers here -->
+    <preamble>
+        \documentclass[$scribus_grefontsize$]{extarticle}
+		\usepackage[paperwidth=$scribus_realwidth$ pt, paperheight=$scribus_realheight$ pt,	left=0cm,top=0cm,right=0cm,bottom=0cm,nohead,nofoot]{geometry}
+        \usepackage[autocompile]{gregoriotex}
+        \title{Scribus-Latex-File}
+    	$scribus_additionalgreheaders$
+    	\author{Scribus}
+		\pagestyle{empty}
+    	\setlength{\textwidth}{$scribus_realwidth$ pt}
+        \usepackage{fontspec}
+        \usepackage{libertine}
+        \definecolor{red1}{HTML}{800000}
+        \definecolor{red2}{HTML}{AA0000}
+        \newfontfamily\ChangeFont{$scribus_font$}
+        %%\newfontfamily\VersiculumFont{Versiculum}
+        \def\GreStar{\textcolor{$scribus_letgrefontcolor$}{\greheightstar}}
+
+        \grechangedim{intersyllablespacenotes}{$scribus_spacenotes$ cm}{fixed}
+        \grechangedim{baselineskip}{ $scribus_baselineskip$ pt}{fixed}
+
+        \begin{filecontents*}[overwrite]{scribus_file-score.gabc}
+</preamble> <!-- this line's indentation is purposefully off because of the way that scribus interprets the preamble section -->
+    <postamble>
+        \end{filecontents*}
+		
+        \begin{document}
+        $scribus_greconf$
+        
+        \grechangestaffsize{$scribus_staffsize$}
+        \gresetlinecolor{$scribus_grelinecolor$}
+        
+        \greannotation{\fontspec{$scribus_anofont$}\fontsize{$scribus_anosize$}{$scribus_anointerline$}\selectfont\color{$scribus_letgreano1color$}$scribus_anostyle${$scribus_annotation1$}}
+        \greannotation{\fontspec{$scribus_anofont$}\fontsize{$scribus_anosize$}{$scribus_anointerline$}\selectfont\color{$scribus_letgreano2color$}$scribus_anostyle${$scribus_annotation2$}}
+
+        \ChangeFont\fontsize{$scribus_grefontsize$}{10}\selectfont
+        \gresetinitiallines{$scribus_inioffon$}
+        \grechangestyle{initial}{\fontspec{$scribus_grefont$}\fontsize{$scribus_letgrefontsize$}{$scribus_letgreinterline$}\selectfont\color{$scribus_letgrefontcolor$}}
+        
+
+        \gresetspecial{V/}{\VersiculumFont\fontsize{$scribus_grefontsize$}{8}\selectfont\textcolor{$scribus_letgrefontcolor$}{v}}%℣.~
+        \gresetspecial{Ps.}{\textcolor{red}{Ps.}}
+
+        \gregorioscore{scribus_file-score}
+        \end{document}
+    </postamble>
+
+
+    <tab type="settings">
+        <title>
+            <i18n>
+                <en>Headers</en>
+                <fr>En-tête</fr>
+            </i18n>
+        </title>
+        <comment>
+           <i18n>
+                <en>Additional LaTeX Headers:</en>
+                <fr>En-tête LaTeX additionnel :</fr>
+            </i18n>
+        </comment>
+        <text name="additionalgreheaders" type="long" default=""></text>
+    </tab>
+
+
+    <tab type="settings">
+
+        <title>
+            <i18n>
+                <en>Gregorio Options</en>
+                <fr>Conf. gregorio</fr>
+            </i18n>
+        </title>
+
+        <list name="font" default="EB Garamond">
+            <title>
+                <i18n>
+                    <en>Font :</en>
+                    <fr>Police :</fr>
+                </i18n>
+            </title>
+            <option value="Aneirin">Aneirin</option>
+            <option value="Cormorant">Cormorant</option>
+            <option value="EB Garamond">EB Garamond</option>
+            <option value="Gingerbread Initials">Gingerbread Initials</option>
+            <option value="Goudy Initialen">Goudy Initialen</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Limeglorycaps">Limeglorycaps</option>
+            <option value="$scribus_otherfont$">
+                <i18n>
+                    <en>Other font ...</en>
+                    <fr>Autre Police ...</fr>
+                </i18n>
+            </option>
+        </list>
+
+        <text name="otherfont" type="short" default="">
+            <i18n>
+                <en>Other font ...</en>
+                <fr>Autre Police ...</fr>
+            </i18n>
+        </text>
+        
+        <spinbox name="grefontsize" type="double" min="1" max="999" step="0.1" default="8">
+            <i18n>
+                <en>Fontsize:</en>
+                <fr>Taille police :</fr>
+            </i18n>
+        </spinbox>
+
+        <list name="staffsize" default="17">
+            <title>
+                <i18n>
+                    <en>staffsize:</en>
+                    <fr>Taille des notes :</fr>
+                </i18n>
+            </title>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+        </list>
+
+        <list name="grelinecolor" default="black">
+            <title>
+                <i18n>
+                    <en>linecolor :</en>
+                    <fr>Couleur de la porté :</fr>
+                </i18n>
+            </title>
+            <option value="black">black</option>
+            <option value="red">red</option>
+            <option value="red1">red1 #800000</option>
+            <option value="red2">red2 #AA0000</option>
+        </list>
+
+        <spinbox name="baselineskip" type="double" min="14.5" max="100" step="0.5" default="55">
+            <i18n>
+                <en>Vertical Spacing:</en>
+                <fr>Espace Vertical :</fr>
+            </i18n>
+        </spinbox>
+
+        <spinbox name="spacenotes" type="double" min="0.05" max="5" step="0.01" default="0.24">
+            <i18n>
+                <en>Horizontal Spacing :</en>
+                <fr>Espace Horizontal :</fr>
+            </i18n>
+        </spinbox>
+
+
+        <text name="greconf" type="long" default="%">
+            <i18n>
+                <en>Additional commands.</en>
+                <fr>Commandes additionelles.</fr>
+            </i18n>
+        </text>
+
+    </tab>
+
+
+    <tab type="settings">
+
+        <title>
+            <i18n>
+                <en>Lettrine</en>
+                <fr>Lettrine</fr>
+            </i18n>
+        </title>
+
+        <comment>
+            <i18n>
+                <en>Setting for Lettrine.</en>
+                <fr>Parametre pour la Lettrine.</fr>
+            </i18n>
+        </comment>
+
+        <list name="inioffon" default="0">
+            <title>
+                <i18n>
+                    <en>Activate...</en>
+                    <fr>Activation...</fr>
+                </i18n>
+            </title>
+            <option value="0">Off</option>
+            <option value="1">On</option>
+        </list>
+
+        <list name="grefont" default="Limeglorycaps">
+            <title>
+                <i18n>
+                    <en>Font :</en>
+                    <fr>Police :</fr>
+                </i18n>
+            </title>
+            <option value="Aneirin">Aneirin</option>
+            <option value="Cormorant">Cormorant</option>
+            <option value="EB Garamond Initials">EB Garamond Initials</option>
+            <option value="Gingerbread Initials">Gingerbread Initials</option>
+            <option value="Goudy Initialen">Goudy Initialen</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Limeglorycaps">Limeglorycaps</option>
+            <option value="$scribus_letotherfont$">
+                <i18n>
+                    <en>Other font ...</en>
+                    <fr>Autre Police ...</fr>
+                </i18n>
+            </option>
+        </list>
+
+        <text name="letotherfont" type="short" default="">
+            <i18n>
+                <en>Other font ...</en>
+                <fr>Autre Police ...</fr>
+            </i18n>
+        </text>
+
+        <spinbox name="letgrefontsize" type="double" min="1" max="999" step="0.5" default="28">
+            <i18n>
+                <en>Fontsize:</en>
+                <fr>Taille police :</fr>
+            </i18n>
+        </spinbox>
+
+        <spinbox name="letgreinterline" type="double" min="1" max="999" step="0.5" default="28">
+            <i18n>
+                <en>Interline :</en>
+                <fr>Interligne :</fr>
+            </i18n>
+        </spinbox>
+
+        <list name="letgrefontcolor" default="black">
+            <title>
+                <i18n>
+                    <en>fontcolor :</en>
+                    <fr>Couleur police :</fr>
+                </i18n>
+            </title>
+            <option value="black">black</option>
+            <option value="red">red</option>
+            <option value="red1">red1 #800000</option>
+            <option value="red2">red2 #AA0000</option>
+        </list>
+
+        <comment>
+            <i18n>
+                <en>Setting for Annotations.</en>
+                <fr>Parametre pour les Annotations.</fr>
+            </i18n>
+        </comment>
+
+        <list name="anofont" default="EB Garamond">
+            <title>
+                <i18n>
+                    <en>Font :</en>
+                    <fr>Police :</fr>
+                </i18n>
+            </title>
+            <option value="Aneirin">Aneirin</option>
+            <option value="Cormorant">Cormorant</option>
+            <option value="EB Garamond">EB Garamond</option>
+            <option value="Gingerbread Initials">Gingerbread Initials</option>
+            <option value="Goudy Initialen">Goudy Initialen</option>
+            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Limeglorycaps">Limeglorycaps</option>
+            <option value="$scribus_anootherfont$">
+                <i18n>
+                    <en>Other font ...</en>
+                    <fr>Autre Police ...</fr>
+                </i18n>
+            </option>
+        </list>
+
+        <text name="anootherfont" type="short" default="">
+            <i18n>
+                <en>Other font ...</en>
+                <fr>Autre Police ...</fr>
+            </i18n>
+        </text>
+
+        <list name="anostyle" default="">
+            <title>
+                <i18n>
+                    <en>Style</en>
+                    <fr>Style</fr>
+                </i18n>
+            </title>
+            <option value="">Regular</option>
+            <option value="\textbf">
+                <i18n>
+                    <en>Bold</en>
+                    <fr>Gras</fr>
+                </i18n>
+            </option>
+            <option value="\textit">
+                <i18n>
+                    <en>Italics</en> 
+                    <fr>Italique</fr>
+                </i18n>
+            </option>
+            <option value="\underline">
+                <i18n>
+                    <en>Underline</en> 
+                    <fr>Soulignier</fr>
+                </i18n>
+            </option>
+        </list>
+            
+        <spinbox name="anosize" type="double" min="1" max="999" step="0.5" default="8">
+            <i18n>
+                <en>Fontsize:</en>
+                <fr>Taille police :</fr>
+            </i18n>
+        </spinbox>
+
+        <spinbox name="anointerline" type="double" min="1" max="999" step="0.5" default="10">
+            <i18n>
+                <en>Interline :</en>
+                <fr>Interligne :</fr>
+            </i18n>
+        </spinbox>
+
+        <list name="annotation1" default="">
+            <title>
+                <i18n>
+                    <en>Annotation 1 :</en>
+                    <fr>Annotation 1 :</fr>
+                </i18n>
+            </title>
+            <option value=""></option>
+            <option value="1.">1.</option>
+            <option value="1. D">1. D</option>
+            <option value="1. D²">1. D²</option>
+            <option value="1. D3">1. D3</option>
+            <option value="1. f">1. f</option>
+            <option value="1. g">1. g</option>
+            <option value="1. g²">1. g²</option>
+            <option value="1. g3">1. g3</option>
+            <option value="1. a">1. a</option>
+            <option value="1. a²">1. a²</option>
+            <option value="1. a3">1. a3</option>
+            <option value="2.">2.</option>
+            <option value="3.">3.</option>
+            <option value="3. b">3. b</option>
+            <option value="3. a">3. a</option>
+            <option value="3. a²">3. a²</option>
+            <option value="3. g">3. g</option>
+            <option value="3. g²">3. g²</option>
+            <option value="4.">4.</option>
+            <option value="4. g">4. g</option>
+            <option value="4. E">4. E</option>
+            <option value="4. c">4. c</option>
+            <option value="4. A">4. A</option>
+            <option value="4. A*">4. A*</option>
+            <option value="5.">5.</option>
+            <option value="5. a">5. a</option>
+            <option value="6.">6.</option>
+            <option value="6. F">6. F</option>
+            <option value="6. f">6. f</option>
+            <option value="7.">7.</option>
+            <option value="7. a">7. a</option>
+            <option value="7. b">7. b</option>
+            <option value="7. c">7. c</option>
+            <option value="7. c²">7. c²</option>
+            <option value="7. d">7. d</option>
+            <option value="8.">8.</option>
+            <option value="8. G">8. G</option>
+            <option value="8. G*">8. G*</option>
+            <option value="8. c">8. c</option>
+            <option value="Pereg. T.">Pereg. T.</option>
+            <option value="v">℣.</option>
+            <option value="Ant.">Ant.</option>
+            <option value="1. Ant.">1. Ant.</option>
+            <option value="2. Ant.">2. Ant.</option>
+            <option value="3. Ant.">3. Ant.</option>
+            <option value="4. Ant.">4. Ant.</option>
+            <option value="5. Ant.">5. Ant.</option>
+            <option value="Ant. Magn.">Ant. Magn.</option>
+            <option value="Ant. Bened.">Ant. Bened.</option>
+            <option value="Hymn.">Hymn.</option>
+            <option value="Intr.">Intr.</option>
+            <option value="Grad.">Grad.</option>
+            <option value="Tract.">Tract.</option>
+            <option value="Seq.">Seq.</option>
+            <option value="Offert.">Offert.</option>
+            <option value="Comm.">Comm.</option>
+        </list>
+
+        <list name="letgreano1color" default="black">
+            <title>
+                <i18n>
+                    <en>Annotation 1 color :</en>
+                    <fr>Couleur annotation 1 :</fr>
+                </i18n>
+            </title>
+            <option value="black">black</option>
+            <option value="red">red</option>
+            <option value="red1">red1 #800000</option>
+            <option value="red2">red2 #AA0000</option>
+        </list>
+
+        <list name="annotation2" default="">
+            <title>
+                <i18n>
+                    <en>Annotation 2 :</en>
+                    <fr>Annotation 2 :</fr>
+                </i18n>
+            </title>
+            <option value=""></option>
+            <option value="1.">1.</option>
+            <option value="1. D">1. D</option>
+            <option value="1. D²">1. D²</option>
+            <option value="1. D3">1. D3</option>
+            <option value="1. f">1. f</option>
+            <option value="1. g">1. g</option>
+            <option value="1. g²">1. g²</option>
+            <option value="1. g3">1. g3</option>
+            <option value="1. a">1. a</option>
+            <option value="1. a²">1. a²</option>
+            <option value="1. a3">1. a3</option>
+            <option value="2.">2.</option>
+            <option value="3.">3.</option>
+            <option value="3. b">3. b</option>
+            <option value="3. a">3. a</option>
+            <option value="3. a²">3. a²</option>
+            <option value="3. g">3. g</option>
+            <option value="3. g²">3. g²</option>
+            <option value="4.">4.</option>
+            <option value="4. g">4. g</option>
+            <option value="4. E">4. E</option>
+            <option value="4. c">4. c</option>
+            <option value="4. A">4. A</option>
+            <option value="4. A*">4. A*</option>
+            <option value="5.">5.</option>
+            <option value="5. a">5. a</option>
+            <option value="6.">6.</option>
+            <option value="6. F">6. F</option>
+            <option value="6. f">6. f</option>
+            <option value="7.">7.</option>
+            <option value="7. a">7. a</option>
+            <option value="7. b">7. b</option>
+            <option value="7. c">7. c</option>
+            <option value="7. c²">7. c²</option>
+            <option value="7. d">7. d</option>
+            <option value="8.">8.</option>
+            <option value="8. G">8. G</option>
+            <option value="8. G*">8. G*</option>
+            <option value="8. c">8. c</option>
+            <option value="Pereg. T.">Pereg. T.</option>
+            <option value="v">℣.</option>
+            <option value="Ant.">Ant.</option>
+            <option value="1. Ant.">1. Ant.</option>
+            <option value="2. Ant.">2. Ant.</option>
+            <option value="3. Ant.">3. Ant.</option>
+            <option value="4. Ant.">4. Ant.</option>
+            <option value="5. Ant.">5. Ant.</option>
+            <option value="Ant. Magn.">Ant. Magn.</option>
+            <option value="Ant. Bened.">Ant. Bened.</option>
+            <option value="Hymn.">Hymn.</option>
+            <option value="Intr.">Intr.</option>
+            <option value="Grad.">Grad.</option>
+            <option value="Tract.">Tract.</option>
+            <option value="Seq.">Seq.</option>
+            <option value="Offert.">Offert.</option>
+            <option value="Comm.">Comm.</option>
+        </list>
+
+        <list name="letgreano2color" default="black">
+            <title>
+                <i18n>
+                    <en>Annotation 2 color :</en>
+                    <fr>Couleur annotation 2 :</fr>
+                </i18n>
+            </title>
+            <option value="black">black</option>
+            <option value="red">red</option>
+            <option value="red1">red1</option>
+            <option value="red2">red2</option>
+        </list>
+
+        <text name="Letgreconf" type="long" default=" ">
+            <i18n>
+                <en>Additional commands :</en>
+                <fr>Commandes additionelles :</fr>
+            </i18n>
+        </text>
+
+    </tab>
+</editorsettings>

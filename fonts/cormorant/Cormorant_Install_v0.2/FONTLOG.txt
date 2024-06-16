@@ -1,0 +1,89 @@
+FONTLOG for the Cormorant font family
+
+This file provides detailed information on the Cormorant Font Software.
+This information should be distributed along with the Cormorant fonts
+and any derivative works.
+
+Basic Font Information
+
+Cormorant is a Unicode display serif typeface encompassing the Adobe Latin
+4 range of characters.  It is inspired by Claude Garamont's timeless 
+designs.
+
+This release contains six styles:
+- Roman
+- Italic
+- Upright (an upright script version of the Italic)
+- Infant (a version of the Roman with single-storey /a/g/y)
+- SC (a small-caps version of the Roman)
+- Unicase (a small-caps version of the Roman mixed with some lowercase 
+  shape substitutions)
+
+Each style comes in five weights:
+- Light
+- Regular
+- Medium
+- Semibold
+- Bold
+  
+Documentation can be found at the Cormorant GitHub page:
+https://github.com/CatharsisFonts/Cormorant
+
+An illustrated presentation can be found at the Cormorant Behance page:
+https://www.behance.net/gallery/28579883/Cormorant-an-open-source-display-font-family
+
+To contribute to the project, contact Christian Thalmann (see below).
+
+
+
+ChangeLog
+
+
+2015-08-27: Release v0.2 (to be released)
+The spin-off styles (Infant, Upright, SC, Unicase) are now separate font
+families from the default ones (Roman, Italic).  This is to prevent 
+Keynote and PowerPoint from reacting strangely to the presence of several
+instances containing the string "Bold" within the same family.  IMPORTANT:
+If you're upgrading from a previous version of Cormorant, please delete
+your old Cormorant font files before installing the new ones.  Otherwise
+you'll end up with both the old and the new files, and the confusion within
+PowerPoint etc. will persist.  If you've used an older version of Cormorant
+in a document, you will also likely have to pick the font anew, since the
+font names changed.
+
+
+2015-08-23: Release v0.1
+
+
+2015-08-22: Redefined the UPM scale to make the type appear larger at a 
+given point size, and to reduce the unnecessarily large line spacing.
+WARNING: Documents and webpages built with older versions of the fonts 
+may require some reformatting!
+
+
+2015-08-17: Unified Roman, SC, Unicase, and Infant into a single Glyphs
+source file.  All four styles are now exported from CormorantRoman.glyphs.
+Run the "Cormorant Rename Glyphs Parameter.py" script to update the 
+derivation laws prior to export.
+(Christian Thalmann)
+
+
+2015-08-15: Added metadata to the fonts, added this fontlog.
+(Christian Thalmann)
+
+
+2015-08-11: First release on GitHub.
+(Christian Thalmann)
+
+
+
+Acknowledgements
+
+If you make modifications be sure to add your name (N), email (E), web-address
+(if you have one) (W) and description (D). This list is in alphabetical order.
+
+N: Christian Thalmann (Catharsis Fonts)
+E: christian.d.thalmann@gmail.com
+W: http://www.myfonts.com/foundry/Catharsis_Fonts/
+D: Creator of the Cormorant font family
+
