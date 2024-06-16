@@ -1,4 +1,4 @@
-# <p align="center">![image](https://github.com/Eclouf/ScriGorio/blob/8c0e5f0ae70185d1f0386a2b59378c085573aa54/exemple.jpg)</p>
+# <p align="center">![image](https://github.com/Eclouf/ScriGorio/blob/1456c19bdc842db2afd18a436fd1cbad3e6ebcb9/exemple.jpg)</p>
 
 # ScriGorio
 
